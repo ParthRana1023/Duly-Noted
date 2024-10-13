@@ -1,4 +1,4 @@
-# Virtual environment
+# Python virtual environment
 venv/
 venv*/
 .Python
@@ -12,12 +12,11 @@ pip-selfcheck.json
 .vscode/
 .idea/
 *.iml
-*.pyc
 
 # Environment variables
 .env
 
-# Database
+# Database files
 notes.db
 
 # Compiled Python files
@@ -25,4 +24,16 @@ notes.db
 
 # Dependency directories
 node_modules/
-/dist/
+dist/
+
+# Optional: Ignore cache and log files
+__pycache__/
+*.log
+
+# Ignore coverage reports if applicable
+.coverage
+htmlcov/
+
+# Ignore other temporary files
+*.tmp
+*.temp

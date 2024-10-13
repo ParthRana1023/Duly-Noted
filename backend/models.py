@@ -5,11 +5,13 @@ class Notes(db.Model):
     title = db.Column(db.String(80), unique=False, nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+    last_updated = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def to_json(self):
         return {
             'id': self.id,
             'title': self.title,
             'content': self.content,
-            'created_at': self.created_at
+            'created_at': self.created_at,
+            'last_updated': self.last_updated
         }

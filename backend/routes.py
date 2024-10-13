@@ -7,7 +7,7 @@ def registered_routes(app):
     @app.route('/api/notes', methods=['GET'])
     def get_allNotes():
         try:
-            notes = Notes.query.all()
+            notes = Notes.query.order_by(Notes.last_updated.desc()).all()
             return jsonify([note.to_json() for note in notes]), 200
         except Exception as e:
             return jsonify({'error': str(e)}), 500
