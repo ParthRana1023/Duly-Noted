@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})  # Adjust for security in production
+CORS(app)
 
 # Configure SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'

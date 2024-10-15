@@ -23,37 +23,66 @@ const theme = extendTheme({
 });
 
 function App() {
-  const [selectedNote, setSelectedNote] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [selectedNote, setSelectedNote] = useState(null);
+
+  const fetchNotes = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/notes");
+      const data = await response.json();
+      setNotes(data);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    }
+  };
+
+  // Create new note function
+  const createNote = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/notes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: "Untitled Note", // Provide a default title
+          content: "", // Provide default content
+        }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text(); // Get error message from response
+        throw new Error(`Failed to create note: ${errorMessage}`);
+      }
+
+      const newNote = await response.json();
+      setNotes((prevNotes) => [newNote, ...prevNotes]); // Add the new note to the list
+      setSelectedNote(newNote); // Select the newly created note
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/notes")
-      .then((response) => response.json())
-      .then((data) => setNotes(data.notes))
-      .catch((error) => console.error("Error fetching notes:", error));
+    fetchNotes(); // Fetch notes on initial render
   }, []);
-
-  const handleCreateNote = () => {
-    const newNote = {
-      id: notes.length + 1,
-      title: "New Note",
-      content: "This is a new note.",
-    };
-    setNotes([...notes, newNote]);
-  };
 
   return (
     <ChakraProvider theme={theme}>
-      <VStack minH="100vh" spacing={4}>
+      <VStack minH="100svh" spacing={4}>
         <Navbar />
         <Container maxW="container.lg" p={0} flex="1">
           <Flex direction={{ base: "column", md: "row" }} h="full">
             <Sidebar
               notes={notes}
               onSelectNote={setSelectedNote}
-              onCreateNote={handleCreateNote}
+              onCreateNote={createNote}
             />
-            <Notes selectedNote={selectedNote} />
+            <Notes
+              selectedNote={selectedNote}
+              setSelectedNote={setSelectedNote}
+              fetchNotes={fetchNotes} // Pass fetchNotes to Notes component
+            />
           </Flex>
         </Container>
       </VStack>

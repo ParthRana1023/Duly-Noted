@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack, Button, Text, useColorMode, Icon } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 
-const Sidebar = ({ notes, onSelectNote, onCreateNote }) => {
+const Sidebar = ({ notes = [], onSelectNote, onCreateNote }) => {
   const { colorMode } = useColorMode();
 
   return (
@@ -27,7 +27,7 @@ const Sidebar = ({ notes, onSelectNote, onCreateNote }) => {
         colorScheme="teal"
         variant="solid"
         mb={4}
-        onClick={onCreateNote}
+        onClick={onCreateNote} // Call the createNote function when the button is clicked
         w="full"
       >
         Create New Note
